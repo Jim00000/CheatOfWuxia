@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="34">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>5</ID>
+      <Description>"俠之道(版本:2.052066000)修改腳本 by Jim00000"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>9</ID>
+      <Description>"MIT授權條款"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+
+{$lua}
+
+getMainForm().CommentButton.doClick()
+
+[DISABLE]
+
+{$lua}
+
+getMainForm().CommentButton.doClick()
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3</ID>
+      <Description>"腳本"</Description>
+      <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+      <LastState Value="" Activated="1" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>12</ID>
+          <Description>"金錢9999999"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_MANY_MONEY, Heluo.UI:CtrlHome:UpdateMoney, Heluo.UI:CtrlHome:UpdateMoney+70, 48 63 80 24 01 00 00)
+alloc(newmem,$1000,INJECTPOINT_MANY_MONEY)
+
+label(return)
+
+registersymbol(INJECTPOINT_MANY_MONEY)
+
+newmem:
+  mov dword ptr [rax+00000124], #9999999
+  movsxd  rax,dword ptr [rax+00000124]
+  jmp return
+
+INJECTPOINT_MANY_MONEY:
+  jmp newmem
+  nop 2
+return:
+
+[DISABLE]
+
+INJECTPOINT_MANY_MONEY:
+  // Heluo.UI:CtrlHome:UpdateMoney+2d - 48 63 80 24010000 - movsxd  rax,dword ptr [rax+00000124]
+  db 48 63 80 24 01 00 00
+
+unregistersymbol(INJECTPOINT_MANY_MONEY)
+dealloc(newmem)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>4</ID>
+          <Description>"基本功可分配點數99 / 特質點數99"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_UNLIMITED_SKILL_POINTS, Heluo.UI:CtrlRegistration:set_character_upgradable_property, Heluo.UI:CtrlRegistration:set_character_upgradable_property+2f3, 48 63 45 B8 41 89 47 38)
+alloc(newmem,$1000,INJECTPOINT_UNLIMITED_SKILL_POINTS)
+
+label(return)
+
+registersymbol(INJECTPOINT_UNLIMITED_SKILL_POINTS)
+
+// original_code:
+//
+// movsxd  rax,dword ptr [rbp-48]
+// mov [r15+38],eax
+
+newmem:
+  mov eax, #99
+  mov [r15+38],eax // point
+  mov [r15+3C],eax // traitpoint
+  jmp return
+
+INJECTPOINT_UNLIMITED_SKILL_POINTS:
+  jmp newmem
+  nop 3
+return:
+
+[DISABLE]
+
+INJECTPOINT_UNLIMITED_SKILL_POINTS:
+  db 48 63 45 B8 41 89 47 38
+
+unregistersymbol(INJECTPOINT_UNLIMITED_SKILL_POINTS)
+dealloc(newmem)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>13</ID>
+          <Description>"基本功素質全1000"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_MAX_UPGRADEABLE_PROPERTY, Heluo.Data:CharacterInfoData:GetUpgradeableProperty+480, Heluo.Data:CharacterInfoData:GetUpgradeableProperty+573, 48 63 40 18 48 63 49 30)
+alloc(newmem,$1000,INJECTPOINT_MAX_UPGRADEABLE_PROPERTY)
+
+label(return)
+
+registersymbol(INJECTPOINT_MAX_UPGRADEABLE_PROPERTY)
+
+newmem:
+  mov dword ptr [rax+18], #1000
+  movsxd  rax,dword ptr [rax+18]
+  movsxd  rcx,dword ptr [rcx+30]
+  jmp return
+
+INJECTPOINT_MAX_UPGRADEABLE_PROPERTY:
+  jmp newmem
+  nop 3
+return:
+
+[DISABLE]
+
+INJECTPOINT_MAX_UPGRADEABLE_PROPERTY:
+  // Heluo.Data:CharacterInfoData:GetUpgradeableProperty+48f - 48 63 40 18 - movsxd  rax,dword ptr [rax+18]
+  // Heluo.Data:CharacterInfoData:GetUpgradeableProperty+493 - 48 63 49 30 - movsxd  rcx,dword ptr [rcx+30]
+  db 48 63 40 18 48 63 49 30
+
+unregistersymbol(INJECTPOINT_MAX_UPGRADEABLE_PROPERTY)
+dealloc(newmem)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>14</ID>
+          <Description>"基本功/人格/四藝 素質全1000"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_MAX_ALL_PROPERTY, Heluo.Data:CharacterInfoData:GetUpgradeablePropertyLevel, Heluo.Data:CharacterInfoData:GetUpgradeablePropertyLevel+2d+36, 48 63 40 18 48 8D 65 00)
+alloc(newmem,$1000,INJECTPOINT_MAX_ALL_PROPERTY)
+
+label(return)
+
+registersymbol(INJECTPOINT_MAX_ALL_PROPERTY)
+
+newmem:
+  mov dword ptr [rax+18], #1000
+  movsxd  rax,dword ptr [rax+18]
+  lea rsp,[rbp+00]
+  jmp return
+
+INJECTPOINT_MAX_ALL_PROPERTY:
+  jmp newmem
+  nop 3
+return:
+
+[DISABLE]
+
+INJECTPOINT_MAX_ALL_PROPERTY:
+  // Heluo.Data:CharacterInfoData:GetUpgradeablePropertyLevel+2d - 48 63 40 18 - movsxd  rax,dword ptr [rax+18]
+  // Heluo.Data:CharacterInfoData:GetUpgradeablePropertyLevel+31 - 48 8D 65 00 - lea rsp,[rbp+00]
+  db 48 63 40 18 48 8D 65 00
+
+unregistersymbol(INJECTPOINT_MAX_ALL_PROPERTY)
+dealloc(newmem)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>17</ID>
+          <Description>"精神100"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_MAX_SPIRIT, Heluo.UI:CtrlNurturance:UpdateNurturanceProperty, Heluo.UI:CtrlNurturance:UpdateNurturanceProperty+52c, 48 63 80 20 01 00 00)
+alloc(newmem,$1000,INJECTPOINT_MAX_SPIRIT)
+
+label(return)
+
+registersymbol(INJECTPOINT_MAX_SPIRIT)
+
+newmem:
+  mov dword ptr [rax+00000120], #100
+  movsxd  rax,dword ptr [rax+00000120]
+  jmp return
+
+INJECTPOINT_MAX_SPIRIT:
+  jmp newmem
+  nop 2
+return:
+
+[DISABLE]
+
+INJECTPOINT_MAX_SPIRIT:
+  // Heluo.UI:CtrlNurturance:UpdateNurturanceProperty+12f - 48 63 80 20 01 00 00 - movsxd  rax,dword ptr [rax+00000120]
+  db 48 63 80 20 01 00 00
+
+unregistersymbol(INJECTPOINT_MAX_SPIRIT)
+dealloc(newmem)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>6</ID>
+          <Description>"我方角色HP為99999 (請將滑鼠移動至人物使效果生效)"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_PLAYER_FACTION_FULL_HP, Heluo.Battle:WuxiaUnit:get_HP, Heluo.Battle:WuxiaUnit:get_HP+28, 41 FF D3 48 8D 65 00)
+alloc(newmem,$1000,INJECTPOINT_PLAYER_FACTION_FULL_HP)
+
+label(return)
+label(not_player_faction)
+
+registersymbol(INJECTPOINT_PLAYER_FACTION_FULL_HP)
+
+// Heluo.Data.Faction (enum)
+// - 0 : Player
+// - 1 : Enemy
+// - 2 : Ally
+
+newmem:
+  call r11
+
+  mov rcx, [rbp-08] // recover reference to base pointer
+  mov r11, qword ptr [rcx+18] // get UnitId
+  test r11, r11
+  jz not_player_faction
+
+  mov rcx, [rbp-08] // recover reference to base pointer
+  mov r11d, dword ptr [rcx+d0] // get Heluo.Data.Faction
+  test r11d, r11d
+  jnz not_player_faction
+
+  // get max HP
+  //mov rcx, [rbp-08]
+  //mov r11, $Heluo.Battle:WuxiaUnit:get_MaxHP
+  //call r11
+
+  mov r11, [rbp-08] // WuxiaUnit
+  mov r11, [r11+C0] // BattleAttribute
+  mov r11, [r11+48]
+  mov r11, [r11+10]
+  lea r11, [r11+20] // address of HP
+
+  // set max HP
+  mov [r11], #99999
+  mov rax, #99999
+
+not_player_faction:
+  lea rsp,[rbp+00]
+  jmp return
+
+INJECTPOINT_PLAYER_FACTION_FULL_HP:
+  jmp newmem
+  nop 2
+return:
+
+[DISABLE]
+
+INJECTPOINT_PLAYER_FACTION_FULL_HP:
+  // Heluo.Battle:WuxiaUnit:get_HP+20 - 41 FF D3      - call r11
+  // Heluo.Battle:WuxiaUnit:get_HP+23 - 48 8D 65 00   - lea rsp,[rbp+00]
+  db 41 FF D3 48 8D 65 00
+
+unregistersymbol(INJECTPOINT_PLAYER_FACTION_FULL_HP)
+dealloc(newmem)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>7</ID>
+          <Description>"我方角色不受傷害"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_PLAYER_FACTION_NO_DAMAGE, Heluo.Battle:WuxiaUnit:DamageHP, Heluo.Battle:WuxiaUnit:DamageHP+2a8, 41 FF D3 49 8B 87 88 00 00 00)
+alloc(newmem,$1000,INJECTPOINT_PLAYER_FACTION_NO_DAMAGE)
+
+label(return)
+label(skip_damage)
+
+registersymbol(INJECTPOINT_PLAYER_FACTION_NO_DAMAGE)
+
+newmem:
+  mov eax,[r15+d0] // get Heluo.Data.Faction
+  test eax, eax
+  jz skip_damage
+
+  call r11
+
+skip_damage:
+  mov rax,[r15+00000088]
+  jmp return
+
+INJECTPOINT_PLAYER_FACTION_NO_DAMAGE:
+  jmp newmem
+  nop 5
+return:
+
+[DISABLE]
+
+INJECTPOINT_PLAYER_FACTION_NO_DAMAGE:
+  // Heluo.Battle:WuxiaUnit:DamageHP+248 - 41 FF D3          - call r11
+  // Heluo.Battle:WuxiaUnit:DamageHP+24b - 49 8B 87 88000000 - mov rax,[r15+00000088]
+  db 41 FF D3 49 8B 87 88 00 00 00
+
+unregistersymbol(INJECTPOINT_PLAYER_FACTION_NO_DAMAGE)
+dealloc(newmem)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>19</ID>
+          <Description>"好感度全滿"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_MAX_RELATIONSHIP, Heluo.UI:CtrlRelationship:SetRelationship, Heluo.UI:CtrlRelationship:SetRelationship+792, 83 39 00 48 63 40 20)
+alloc(newmem,$1000,INJECTPOINT_MAX_RELATIONSHIP)
+
+label(return)
+
+registersymbol(INJECTPOINT_MAX_RELATIONSHIP)
+
+newmem:
+  cmp dword ptr [rcx],00
+  mov dword ptr [rax+20], #99999
+  movsxd rax, dword ptr [rax+20]
+  jmp return
+
+INJECTPOINT_MAX_RELATIONSHIP:
+  jmp newmem
+  nop 2
+return:
+
+[DISABLE]
+
+INJECTPOINT_MAX_RELATIONSHIP:
+  // Heluo.UI:CtrlRelationship:SetRelationship+2e2 - 83 39 00    - cmp dword ptr [rcx],00
+  // Heluo.UI:CtrlRelationship:SetRelationship+2e5 - 48 63 40 20 - movsxd  rax,dword ptr [rax+20]
+  db 83 39 00 48 63 40 20
+
+unregistersymbol(INJECTPOINT_MAX_RELATIONSHIP)
+dealloc(newmem)
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <Structures StructVersion="2">
+    <Structure Name="String" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
+      <Elements>
+        <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="Length" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="20" Vartype="Unicode String" Bytesize="128" OffsetHex="00000014" Description="Value" DisplayMethod="Unsigned Integer"/>
+      </Elements>
+    </Structure>
+    <Structure Name="String" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
+      <Elements>
+        <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="Length" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="20" Vartype="Unicode String" Bytesize="128" OffsetHex="00000014" Description="Value" DisplayMethod="Unsigned Integer"/>
+      </Elements>
+    </Structure>
+    <Structure Name="String" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
+      <Elements>
+        <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="Length" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="20" Vartype="Unicode String" Bytesize="128" OffsetHex="00000014" Description="Value" DisplayMethod="Unsigned Integer"/>
+      </Elements>
+    </Structure>
+    <Structure Name="String" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
+      <Elements>
+        <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="Length" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="20" Vartype="Unicode String" Bytesize="128" OffsetHex="00000014" Description="Value" DisplayMethod="Unsigned Integer"/>
+      </Elements>
+    </Structure>
+    <Structure Name="String" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
+      <Elements>
+        <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="Length" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="20" Vartype="Unicode String" Bytesize="128" OffsetHex="00000014" Description="Value" DisplayMethod="Unsigned Integer"/>
+      </Elements>
+    </Structure>
+    <Structure Name="String" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
+      <Elements>
+        <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="Length" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="20" Vartype="Unicode String" Bytesize="128" OffsetHex="00000014" Description="Value" DisplayMethod="Unsigned Integer"/>
+      </Elements>
+    </Structure>
+    <Structure Name="String" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
+      <Elements>
+        <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="Length" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="20" Vartype="Unicode String" Bytesize="128" OffsetHex="00000014" Description="Value" DisplayMethod="Unsigned Integer"/>
+      </Elements>
+    </Structure>
+  </Structures>
+  <Comments>[MIT License]
+Copyright 2021 Jim00000
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</Comments>
+</CheatTable>
