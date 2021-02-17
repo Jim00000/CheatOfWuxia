@@ -474,10 +474,20 @@ end
 {$asm}
 
 aobScanRegion(INJECTPOINT_FREEZE_ROUND, Heluo.Manager:RoundManager:SetRound, Heluo.Manager:RoundManager:SetRound+b8, 55)
+aobScanRegion(INJECTPOINT_FREEZE_ROUNDCHANGED, Heluo.Manager:RoundManager:OnRoundChanged, Heluo.Manager:RoundManager:OnRoundChanged+ec, 55)
+aobScanRegion(INJECTPOINT_FREEZE_TIME, Heluo.Manager:RoundManager:NextTime, Heluo.Manager:RoundManager:NextTime+c0, 55)
 
 registersymbol(INJECTPOINT_FREEZE_ROUND)
+registersymbol(INJECTPOINT_FREEZE_ROUNDCHANGED)
+registersymbol(INJECTPOINT_FREEZE_TIME)
 
 INJECTPOINT_FREEZE_ROUND:
+  ret
+
+INJECTPOINT_FREEZE_ROUNDCHANGED:
+  ret
+
+INJECTPOINT_FREEZE_TIME:
   ret
 
 [DISABLE]
@@ -486,7 +496,17 @@ INJECTPOINT_FREEZE_ROUND:
   // Heluo.Manager:RoundManager:SetRound - 55 - push rbp
   db 55
 
+INJECTPOINT_FREEZE_ROUNDCHANGED:
+  // Heluo.Manager:RoundManager:OnRoundChanged - 55 - push rbp
+  db 55
+
+INJECTPOINT_FREEZE_TIME:
+  // Heluo.Manager:RoundManager:NextTime - 55 - push rbp
+  db 55
+
 unregistersymbol(INJECTPOINT_FREEZE_ROUND)
+unregistersymbol(INJECTPOINT_FREEZE_ROUNDCHANGED)
+unregistersymbol(INJECTPOINT_FREEZE_TIME)
 </AssemblerScript>
         </CheatEntry>
       </CheatEntries>
