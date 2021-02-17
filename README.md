@@ -29,6 +29,7 @@ This game only supports traditional/simplified Chinese language. Sorry for no en
 - 我方角色HP為99999 (請將滑鼠移動至人物使效果生效)
 - 我方角色不受傷害
 - 好感度全滿
+- 凍結時間
 
 ## 授權條款
 

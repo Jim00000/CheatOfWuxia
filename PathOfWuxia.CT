@@ -454,6 +454,41 @@ unregistersymbol(INJECTPOINT_MAX_RELATIONSHIP)
 dealloc(newmem)
 </AssemblerScript>
         </CheatEntry>
+        <CheatEntry>
+          <ID>20</ID>
+          <Description>"時間暫停之術"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+{$lua}
+
+if process and readInteger(process) ~= 0 then
+    mono_initialize()
+    LaunchMonoDataCollector()
+else
+    messageDialog('未偵測到"俠之道"遊戲行程.',mtError, mbOK)
+    error(msg)
+end
+
+{$asm}
+
+aobScanRegion(INJECTPOINT_FREEZE_ROUND, Heluo.Manager:RoundManager:SetRound, Heluo.Manager:RoundManager:SetRound+b8, 55)
+
+registersymbol(INJECTPOINT_FREEZE_ROUND)
+
+INJECTPOINT_FREEZE_ROUND:
+  ret
+
+[DISABLE]
+
+INJECTPOINT_FREEZE_ROUND:
+  // Heluo.Manager:RoundManager:SetRound - 55 - push rbp
+  db 55
+
+unregistersymbol(INJECTPOINT_FREEZE_ROUND)
+</AssemblerScript>
+        </CheatEntry>
       </CheatEntries>
     </CheatEntry>
   </CheatEntries>
